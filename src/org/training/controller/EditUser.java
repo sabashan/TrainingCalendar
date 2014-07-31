@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.training.jsonParser.JSONArray;
 import org.training.jsonParser.JSONObject;
 
 @WebServlet("/EditUser")
@@ -22,6 +21,7 @@ public class EditUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private JSONObject jObject;
 	private String output;
+	EndPointUrl ep = new EndPointUrl();
 
 	public EditUser() {
 		super();
@@ -40,29 +40,28 @@ public class EditUser extends HttpServlet {
 
 		try {
 
-			 URL url = new
-			 URL("https://appserver.test.cloud.wso2.com/t/pirinthan14/webapps/trainingcalservice-1.0.0/rest/tc/user/searche/"+email);
-			/*URL url = new URL(
-					"http://localhost:8080/TrainingCalendar/rest/tc/user/searche/"
-							+ email);*/
+			URL url = new URL(ep.getUrl() + "rest/tc/user/searche/" + email);
+			/*
+			 * URL url = new URL(
+			 * "http://localhost:8080/TrainingCalendar/rest/tc/user/searche/" +
+			 * email);
+			 */
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept-Type", "application/json");
 
-			
 			BufferedReader br = new BufferedReader(new InputStreamReader(
-					(conn.getInputStream())));			
-			
+					(conn.getInputStream())));
+
 			System.out.println("Output from Server .... \n");
-			while ((output = br.readLine()) != null) {				
+			while ((output = br.readLine()) != null) {
 				jObject = new JSONObject(output);
 			}
 			conn.disconnect();
-			System.out.println(jObject);		
+			System.out.println(jObject);
 			request.setAttribute("msg", jObject);
-			RequestDispatcher rd = request
-					.getRequestDispatcher("editUser.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("editUser.jsp");
 			rd.forward(request, response);
 
 		} catch (MalformedURLException e) {
@@ -70,10 +69,7 @@ public class EditUser extends HttpServlet {
 			e.printStackTrace();
 
 		} catch (IOException e) {
-
 			e.printStackTrace();
-
 		}
 	}
-
 }

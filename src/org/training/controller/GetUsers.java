@@ -22,7 +22,8 @@ import java.net.URL;
 public class GetUsers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String output;
-	private JSONObject jObject;	
+	private JSONObject jObject;
+	EndPointUrl ep = new EndPointUrl();
 
 	public GetUsers() {
 		super();
@@ -36,40 +37,39 @@ public class GetUsers extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
-			
-			 URL url = new
-			 URL("https://appserver.test.cloud.wso2.com/t/pirinthan14/webapps/trainingcalservice-1.0.0/rest/tc/user");
-			/*URL url = new URL(
-					"http://localhost:8080/TrainingCalendar/rest/tc/user");*/
+
+			URL url = new URL(ep.getUrl() + "rest/tc/user");
+			/*
+			 * URL url = new URL(
+			 * "http://localhost:8080/TrainingCalendar/rest/tc/user");
+			 */
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept-Type", "application/json");
 
 			System.out.println("in side get user servlet\n");
-		
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(
-					(conn.getInputStream())));		
+					(conn.getInputStream())));
 
 			System.out.println("Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
-				
+
 				jObject = new JSONObject(output);
-				
+
 			}
 			conn.disconnect();
-		
+
 			JSONArray am = jObject.getJSONArray("user");
 			request.setAttribute("msg", am);
 
-			
-			
-			RequestDispatcher rd = request.getRequestDispatcher("userDetails.jsp");
+			RequestDispatcher rd = request
+					.getRequestDispatcher("userDetails.jsp");
 			rd.forward(request, response);
-			
+
 			System.out.println("After JSP display");
-			
+
 		} catch (MalformedURLException e) {
 
 			e.printStackTrace();

@@ -23,6 +23,7 @@ public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String output;
 	private JSONObject jObject;
+	EndPointUrl ep = new EndPointUrl();
 
 	public Login() {
 		super();
@@ -42,14 +43,14 @@ public class Login extends HttpServlet {
 			String userid = request.getParameter("username");
 			String pass = request.getParameter("password");
 
+			URL url = new URL(ep.getUrl() + "rest/tc/user/auth/" + userid + ","
+					+ pass);
+			System.out.println(url);
 			/*
 			 * URL url = new URL(
-			 * "https://appserver.test.cloud.wso2.com/t/pirinthan14/webapps/trainingcalservice-1.0.0/rest/tc/user/auth/"
-			 * +userid);
+			 * "http://localhost:8080/TrainingCalendar/rest/tc/user/auth/" +
+			 * userid + "," + pass);
 			 */
-			URL url = new URL(
-					"http://localhost:8080/TrainingCalendar/rest/tc/user/auth/"
-							+ userid + "," + pass);
 			System.out.println(url);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
@@ -60,7 +61,7 @@ public class Login extends HttpServlet {
 					(conn.getInputStream())));
 
 			while ((output = br.readLine()) != null) {
-				jObject = new JSONObject(output);				
+				jObject = new JSONObject(output);
 				if (Integer.parseInt(jObject.getString("roleId").toString()) == 2) {
 					Cookie loginCookie = new Cookie("user", userid);
 					// setting cookie to expiry in 30 mins

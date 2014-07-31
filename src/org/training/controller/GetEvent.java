@@ -23,6 +23,7 @@ public class GetEvent extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public String output;
 	JSONObject jObject;
+	EndPointUrl ep = new EndPointUrl();
 
 	public GetEvent() {
 		super();
@@ -37,10 +38,11 @@ public class GetEvent extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
 
-			URL url = new
-			 URL("https://appserver.test.cloud.wso2.com/t/pirinthan14/webapps/trainingcalservice-1.0.0/rest/tc/event");
-			/*URL url = new URL(
-					"http://localhost:8080/TrainingCalendar/rest/tc/event");*/
+			URL url = new URL(ep.getUrl() + "rest/tc/event");
+			/*
+			 * URL url = new URL(
+			 * "http://localhost:8080/TrainingCalendar/rest/tc/event");
+			 */
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
 			conn.setRequestMethod("GET");
@@ -58,10 +60,9 @@ public class GetEvent extends HttpServlet {
 			}
 			conn.disconnect();
 
-		
 			JSONArray am = jObject.getJSONArray("event");
 			request.setAttribute("msg", am);
-			
+
 			RequestDispatcher rd = request
 					.getRequestDispatcher("eventDetails.jsp");
 			rd.forward(request, response);

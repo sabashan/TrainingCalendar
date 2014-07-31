@@ -24,6 +24,7 @@ public class EditEvent extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public String output;
 	JSONObject jObject;
+	EndPointUrl ep = new EndPointUrl();
 
 	public EditEvent() {
 		super();
@@ -39,11 +40,12 @@ public class EditEvent extends HttpServlet {
 		try {
 			String eventId = request.getParameter("eventId");
 
-			 URL url = new
-			 URL("https://appserver.test.cloud.wso2.com/t/pirinthan14/webapps/trainingcalservice-1.0.0/rest/tc/event/searchid/"+eventId);
-			/*URL url = new URL(
-					"http://localhost:8080/TrainingCalendar/rest/tc/event/searchid/"
-							+ eventId);*/
+			URL url = new URL(ep.getUrl() + "rest/tc/event/searchid/" + eventId);
+			/*
+			 * URL url = new URL(
+			 * "http://localhost:8080/TrainingCalendar/rest/tc/event/searchid/"
+			 * + eventId);
+			 */
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
 			conn.setRequestMethod("GET");
@@ -57,7 +59,6 @@ public class EditEvent extends HttpServlet {
 			while ((output = br.readLine()) != null) {
 				System.out.println(output);
 
-				// output= output.substring(1, output.length()-1);
 				jObject = new JSONObject(output);
 
 				System.out.println(jObject.getJSONObject("event"));
@@ -77,8 +78,6 @@ public class EditEvent extends HttpServlet {
 		} catch (IOException e) {
 
 			e.printStackTrace();
-
 		}
-
 	}
 }

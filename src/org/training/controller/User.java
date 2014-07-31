@@ -23,6 +23,7 @@ public class User extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String output;
 	private JSONObject jObject;
+	EndPointUrl ep = new EndPointUrl();
 
 	public User() {
 		super();
@@ -48,11 +49,12 @@ public class User extends HttpServlet {
 
 		try {
 
-			 URL url = new
-			 URL("https://appserver.test.cloud.wso2.com/t/pirinthan14/webapps/trainingcalservice-1.0.0/rest/tc/event/searche/"+userName);
-			/*URL url = new URL(
-					"http://localhost:8080/TrainingCalendar/rest/tc/event/searche/"
-							+ userName);*/
+			URL url = new URL(ep.getUrl() + "rest/tc/event/searche/" + userName);
+			/*
+			 * URL url = new URL(
+			 * "http://localhost:8080/TrainingCalendar/rest/tc/event/searche/" +
+			 * userName);
+			 */
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
 			conn.setRequestMethod("GET");
@@ -66,29 +68,17 @@ public class User extends HttpServlet {
 				jObject = new JSONObject(output);
 			}
 			conn.disconnect();
-			/*
-			 * System.out.print(jObject.getJSONArray("event").getJSONObject(0)
-			 * .getString("firstName"));
-			 */
-
-			// am=jObject.getJSONArray("user").getJSONObject(0).getString("firstName");
+			
 			JSONArray am = jObject.getJSONArray("event");
 			request.setAttribute("msg", am);
 
-			
-
 			RequestDispatcher rd = request.getRequestDispatcher("userHome.jsp");
 			rd.forward(request, response);
-		
+
 		} catch (MalformedURLException e) {
-
 			e.printStackTrace();
-
 		} catch (IOException e) {
-
 			e.printStackTrace();
-
 		}
 	}
-
 }

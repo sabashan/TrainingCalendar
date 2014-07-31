@@ -1,6 +1,7 @@
 package org.training.controller;
 
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.training.jsonParser.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -20,6 +22,7 @@ public class DeleteEvent extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public String output;
 	JSONObject jObject;
+	EndPointUrl ep = new EndPointUrl();
 
 	public DeleteEvent() {
 		super();
@@ -35,9 +38,7 @@ public class DeleteEvent extends HttpServlet {
 		try {
 			String eventId = request.getParameter("eventId");
 
-			URL url = new URL(
-					"https://appserver.test.cloud.wso2.com/t/pirinthan14/webapps/trainingcalservice-1.0.0/rest/tc/event/"
-							+ eventId);
+			URL url = new URL(ep.getUrl() + "rest/tc/event/" + eventId);
 			/*
 			 * URL url = new URL(
 			 * "http://localhost:8080/TrainingCalendar/rest/tc/event/"+eventId);
@@ -52,7 +53,7 @@ public class DeleteEvent extends HttpServlet {
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					(conn.getInputStream())));
-			conn.disconnect();			
+			conn.disconnect();
 
 			RequestDispatcher rd = request.getRequestDispatcher("GetEvent");
 			rd.forward(request, response);

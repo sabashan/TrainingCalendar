@@ -12,31 +12,34 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/Logout")
 public class Logout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-  
-    public Logout() {
-        super();       
-    }
+	EndPointUrl ep = new EndPointUrl();
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	public Logout() {
+		super();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+	}
+
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
-        Cookie loginCookie = null;
-        Cookie[] cookies = request.getCookies();
-        if(cookies != null){
-        for(Cookie cookie : cookies){
-            if(cookie.getName().equals("user")){
-                loginCookie = cookie;
-                break;
-            }
-        }
-        }
-        if(loginCookie != null){
-            loginCookie.setMaxAge(0);
-            response.addCookie(loginCookie);
-        }
-        response.sendRedirect("index.html");
+		Cookie loginCookie = null;
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("user")) {
+					loginCookie = cookie;
+					break;
+				}
+			}
+		}
+		if (loginCookie != null) {
+			loginCookie.setMaxAge(0);
+			response.addCookie(loginCookie);
+		}
+		response.sendRedirect("index.html");
 	}
 }

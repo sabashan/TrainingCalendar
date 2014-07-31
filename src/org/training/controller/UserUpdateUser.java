@@ -20,52 +20,52 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/UserUpdateUser")
 public class UserUpdateUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-   
-    public UserUpdateUser() {
-        super();      
-    }
+	EndPointUrl ep = new EndPointUrl();
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	public UserUpdateUser() {
+		super();
 	}
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 String firstname=request.getParameter("firstname"); 
-		 String lastname=request.getParameter("lastname"); 
-		 String group=request.getParameter("group");
-		 String email=request.getParameter("email"); 		 
+
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+	}
+
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		String firstname = request.getParameter("firstname");
+		String lastname = request.getParameter("lastname");
+		String group = request.getParameter("group");
+		String email = request.getParameter("email");
 
 		try {
 
-			 URL url = new
-			 URL("https://appserver.test.cloud.wso2.com/t/pirinthan14/webapps/trainingcalservice-1.0.0/rest/tc/user");
-		/*	URL url = new URL(
-					"http://localhost:8080/TrainingCalendar/rest/tc/user");*/
+			URL url = new URL(ep.getUrl() + "rest/tc/user");
+			/*
+			 * URL url = new URL(
+			 * "http://localhost:8080/TrainingCalendar/rest/tc/user");
+			 */
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
 			conn.setRequestMethod("PUT");
 			conn.setRequestProperty("Content-Type", "application/xml");
-			// conn.set
 
-			System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++>");
+			System.out
+					.println("++++++++++++++++++++++++++++++++++++++++++++++++>");
 			System.out.println("===========XML==============>>>>>>>>>>>");
-			String input = "<user>"
-					+ "<firstName>"+firstname+"</firstName>"
-							+ "<lastName>"+lastname+"</lastName>"
-							+ "<group>"+group+"</group>"
-							+ "<email>"+email+"</email>"							
-							+ "</user>";
+			String input = "<user>" + "<firstName>" + firstname
+					+ "</firstName>" + "<lastName>" + lastname + "</lastName>"
+					+ "<group>" + group + "</group>" + "<email>" + email
+					+ "</email>" + "</user>";
 
-			 OutputStream os = conn.getOutputStream();
-			 os.write(input.getBytes());
-			 os.flush();		
+			OutputStream os = conn.getOutputStream();
+			os.write(input.getBytes());
+			os.flush();
 
-			 System.out.println("Userupdate herer");
-			 
-			 response.sendRedirect("userHome.jsp");
-			 /*RequestDispatcher rd = request.getRequestDispatcher("GetUsers");
-			rd.forward(request, response);*/
+			System.out.println("Userupdate herer");
+
+			response.sendRedirect("userHome.jsp");
+
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					(conn.getInputStream())));
 
@@ -73,10 +73,9 @@ public class UserUpdateUser extends HttpServlet {
 			System.out.println("Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
 				System.out.println(output);
-				
-			}			
+
+			}
 			conn.disconnect();
-			
 
 		} catch (MalformedURLException e) {
 

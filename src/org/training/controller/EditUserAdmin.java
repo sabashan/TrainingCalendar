@@ -20,42 +20,45 @@ import org.training.jsonParser.JSONObject;
 public class EditUserAdmin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private JSONObject jObject;
-	private String output;       
-   
-    public EditUserAdmin() {
-        super();
-      
-    }
+	private String output;
+	EndPointUrl ep = new EndPointUrl();
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	public EditUserAdmin() {
+		super();
+
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+	}
+
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("key");
 
 		try {
 
-			 URL url = new
-			 URL("https://appserver.test.cloud.wso2.com/t/pirinthan14/webapps/trainingcalservice-1.0.0/rest/tc/user/searche/"+email);
-		/*	URL url = new URL(
-					"http://localhost:8080/TrainingCalendar/rest/tc/user/searche/"
-							+ email);*/
+			URL url = new URL(ep.getUrl() + "rest/tc/user/searche/" + email);
+			/*
+			 * URL url = new URL(
+			 * "http://localhost:8080/TrainingCalendar/rest/tc/user/searche/" +
+			 * email);
+			 */
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept-Type", "application/json");
 
-			
 			BufferedReader br = new BufferedReader(new InputStreamReader(
-					(conn.getInputStream())));			
-			
+					(conn.getInputStream())));
+
 			System.out.println("Output from Server .... \n");
-			while ((output = br.readLine()) != null) {				
+			while ((output = br.readLine()) != null) {
 				jObject = new JSONObject(output);
 			}
 			conn.disconnect();
-			System.out.println(jObject);		
+			System.out.println(jObject);
 			request.setAttribute("msg", jObject);
 			RequestDispatcher rd = request
 					.getRequestDispatcher("editUserByAdmin.jsp");
@@ -71,6 +74,4 @@ public class EditUserAdmin extends HttpServlet {
 
 		}
 	}
-	
-
 }
